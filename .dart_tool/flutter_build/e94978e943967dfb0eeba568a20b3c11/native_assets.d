@@ -1,0 +1,1 @@
+ /Users/bmacademy/Desktop/redcollar-flutter-nodejs/.dart_tool/flutter_build/e94978e943967dfb0eeba568a20b3c11/native_assets.yaml: 
