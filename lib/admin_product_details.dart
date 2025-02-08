@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_application_1/product_Screen.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'favorites_page.dart';
+// ignore: unused_import
 import 'product_details.dart';
 
 class AdminProductDetailsPage extends StatefulWidget {
@@ -483,7 +485,7 @@ class _AdminProductDetailsPageState extends State<AdminProductDetailsPage> {
                             context,
                             MaterialPageRoute(
                               builder: (context) => ProductDetailPage(
-                                product: item,
+                                product: item, cart: [], favorites: [ runtimeType],
                               ),
                             ),
                           );

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'clothes_Screen.dart';
-import 'profile_Page.dart';
+import 'profile_provider.dart';
 import 'search.dart';
 import 'favorites_Page.dart';
 import 'cart_Screen.dart';
@@ -11,9 +10,14 @@ import 'dart:convert';
 
 class HomeScreen extends StatefulWidget {
   final String username;
+ 
 
-  const HomeScreen({Key? key, required this.username, required bool isAdmin})
-      : super(key: key);
+
+  const HomeScreen({Key? key,
+      required this.username,
+      required bool isAdmin,
+      required userId,
+      required email}) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -21,23 +25,28 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 0;
-
-  final List<Widget> _pages = [];
+  late List<Widget> _pages;
 
   @override
   void initState() {
     super.initState();
-    _pages.addAll([
-      _HomeContent(username: widget.username), // Home Content
-      const SearchScreen(), // Search Screen
-      FavoritesPage(), // Favorites Page
+
+    // ✅ Initialize pages dynamically with username & email
+    _pages = [
+      _HomeContent(username: widget.username),
+      const SearchScreen(),
+      FavoritesPage(),
       const CartScreen(cart: []),
-      ProfileScreen(),
-    ]);
+      ProfileScreen(username: widget.username, email: '', phoneNumber: '',),
+    ];
   }
 
   @override
   Widget build(BuildContext context) {
+    print( widget.username);
+   
+
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: _pages[_currentIndex],
@@ -69,6 +78,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
 class _HomeContent extends StatelessWidget {
   final String username;
+
 
   String generateImageUrl(String? imagePath) {
     if (imagePath == null || imagePath.isEmpty) {

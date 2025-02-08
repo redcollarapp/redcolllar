@@ -85,6 +85,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
         builder: (context) => HomeScreen(
           isAdmin: false,
           username: '',
+          userId: '',
+          email: '',
         ),
       ),
     );

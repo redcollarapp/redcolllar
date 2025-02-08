@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/product_Screen.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:lottie/lottie.dart';
+// ignore: unused_import
 import 'product_details.dart';
+// ignore: unused_import
 import 'cart_Screen.dart';
 import 'favorites_provider.dart';
 
@@ -189,7 +192,7 @@ class _ClothesSectionPageState extends State<ClothesSectionPage> {
           context,
           MaterialPageRoute(
             builder: (_) => ProductDetailPage(
-              product: item,
+              product: item, cart: [], favorites: [],
             ),
           ),
         );

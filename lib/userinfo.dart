@@ -4,14 +4,12 @@ class InformationScreen extends StatefulWidget {
   final String username;
   final String email;
   final String address;
-  final String phoneNumber; // ✅ Added phoneNumber parameter
 
   const InformationScreen({
     super.key,
     required this.username,
     required this.email,
     required this.address,
-    required this.phoneNumber, // ✅ Fixed issue
   });
 
   @override
@@ -21,16 +19,16 @@ class InformationScreen extends StatefulWidget {
 class _InformationScreenState extends State<InformationScreen> {
   late TextEditingController _usernameController;
   late TextEditingController _emailController;
-  late TextEditingController _addressController;
-  late TextEditingController _phoneNumberController; // ✅ Fixed phone number controller
+    late TextEditingController _addressController;
 
   @override
   void initState() {
     super.initState();
+    // Initialize controllers with current user data
     _usernameController = TextEditingController(text: widget.username);
     _emailController = TextEditingController(text: widget.email);
     _addressController = TextEditingController(text: widget.address);
-    _phoneNumberController = TextEditingController(text: widget.phoneNumber); // ✅ Fixed issue
+     _addressController = TextEditingController(text: widget.address);
   }
 
   @override
@@ -38,25 +36,24 @@ class _InformationScreenState extends State<InformationScreen> {
     _usernameController.dispose();
     _emailController.dispose();
     _addressController.dispose();
-    _phoneNumberController.dispose();
     super.dispose();
   }
 
-  // ✅ Save updated information
+  // Function to save the updated information
   void _saveInformation() {
     final String updatedUsername = _usernameController.text;
     final String updatedEmail = _emailController.text;
     final String updatedAddress = _addressController.text;
-    final String updatedPhoneNumber = _phoneNumberController.text; // ✅ Fixed type
 
+    // For demonstration purposes, we're simply showing a Snackbar
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Information updated!')),
+      SnackBar(content: Text('Information updated!')),
     );
 
+    // Here you can handle the saving logic (e.g., update database, API call, etc.)
     print('Updated Username: $updatedUsername');
     print('Updated Email: $updatedEmail');
     print('Updated Address: $updatedAddress');
-    print('Updated Phone Number: $updatedPhoneNumber');
   }
 
   @override
@@ -77,7 +74,7 @@ class _InformationScreenState extends State<InformationScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // ✅ Username Input
+            // Username Input
             TextField(
               controller: _usernameController,
               decoration: const InputDecoration(
@@ -87,7 +84,7 @@ class _InformationScreenState extends State<InformationScreen> {
             ),
             const SizedBox(height: 10),
 
-            // ✅ Email Input
+            // Email Input
             TextField(
               controller: _emailController,
               decoration: const InputDecoration(
@@ -97,22 +94,11 @@ class _InformationScreenState extends State<InformationScreen> {
             ),
             const SizedBox(height: 10),
 
-            // ✅ Address Input
+            // Address Input
             TextField(
               controller: _addressController,
               decoration: const InputDecoration(
                 labelText: 'Address',
-                border: OutlineInputBorder(),
-              ),
-            ),
-            const SizedBox(height: 10),
-
-            // ✅ Phone Number Input
-            TextField(
-              controller: _phoneNumberController,
-              keyboardType: TextInputType.phone,
-              decoration: const InputDecoration(
-                labelText: 'Phone Number',
                 border: OutlineInputBorder(),
               ),
             ),

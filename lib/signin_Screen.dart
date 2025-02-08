@@ -8,6 +8,8 @@ import 'signup_Screen.dart';
 import 'forgot.dart';
 import 'admin_panel_screen.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'provider/userProvider.dart';
+import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -44,7 +46,7 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
-  Future<void> _loginWithEmail() async {
+Future<void> _loginWithEmail() async {
     try {
       final response = await http.post(
         Uri.parse('http://10.0.2.2:6000/api/users/login'),
@@ -62,21 +64,26 @@ class _LoginPageState extends State<LoginPage> {
         if (success) {
           final username = data['username'] ?? 'Unknown User';
           final isAdmin = data['isAdmin'] ?? false;
+          final userId = data['_id'] ?? '';
+          final email = data['email'] ?? '';
 
+          // Update global state using UserProvider
+          Provider.of<UserProvider>(context, listen: false)
+              .login(userId, username, email);
+
+          // Show success message
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(
-                'Login successful! Welcome, $username',
-                style: GoogleFonts.lato(),
-              ),
+              content: Text('Login successful! Welcome, $username'),
             ),
           );
 
+          // Navigate based on user role (admin or regular)
           if (isAdmin) {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                builder: (context) => AdminPanelScreen(username: '$username'),
+                builder: (context) => AdminPanelScreen(username: username),
               ),
             );
           } else {
@@ -84,8 +91,10 @@ class _LoginPageState extends State<LoginPage> {
               context,
               MaterialPageRoute(
                 builder: (context) => HomeScreen(
-                  username: '$username',
+                  username: username,
                   isAdmin: isAdmin,
+                  userId: userId,
+                  email: email,
                 ),
               ),
             );
@@ -99,15 +108,11 @@ class _LoginPageState extends State<LoginPage> {
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(
-            'Error: $e',
-            style: GoogleFonts.lato(),
-          ),
+          content: Text('Error: $e'),
         ),
       );
     }
   }
-
   Future<void> _loginWithGoogle() async {
     try {
       GoogleSignInAccount? user = await _googleSignIn.signIn();
@@ -125,7 +130,7 @@ class _LoginPageState extends State<LoginPage> {
           MaterialPageRoute(
             builder: (context) => HomeScreen(
               username: user.displayName ?? 'Unknown User',
-              isAdmin: false,
+              isAdmin: false, email: '', userId: null,
             ),
           ),
         );
